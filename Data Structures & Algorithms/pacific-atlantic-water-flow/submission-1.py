@@ -1,0 +1,27 @@
+class Solution:
+    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+        ROWS, COLS = len(heights), len(heights[0]),
+        pac, atl = set(), set()
+        def DFS(r, c, visited, prevHeight):
+            if (r, c) in visited or r < 0 or c < 0 or r >= ROWS or c >= COLS or heights[r][c] < prevHeight:
+                return
+            visited.add((r, c))
+            DFS(r+1, c, visited, heights[r][c])
+            DFS(r-1, c, visited, heights[r][c])
+            DFS(r, c+1, visited, heights[r][c])
+            DFS(r, c-1, visited, heights[r][c])
+
+        for c in range(COLS):
+            DFS(0, c, pac, heights[0][c])
+            DFS(ROWS-1, c, atl, heights[ROWS-1][c])
+        for r in range(ROWS):
+            DFS(r, 0, pac, heights[r][0])
+            DFS(r, COLS-1, atl, heights[r][COLS-1])
+        output = []
+        print(pac)
+        print(atl)
+        for r, c in pac:
+            if (r, c) in atl:
+                output.append([r, c])
+        return output
+        
